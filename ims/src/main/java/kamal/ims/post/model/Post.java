@@ -23,7 +23,6 @@ public class Post {
 
 //    private String category;
 
-
     @ManyToOne( fetch = FetchType.EAGER)
     @JoinTable(
             name = "post_category",

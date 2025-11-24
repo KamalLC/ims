@@ -33,4 +33,22 @@ public class PostController {
                 .build()
         );
     }
+
+    @GetMapping(value = "open_posts")
+    public ResponseEntity<Map<String, Object>> getOpenPosts() throws JsonProcessingException {
+        List<Post> posts = new ArrayList<>();
+
+        for (Post post : postService.getAllPosts()) {
+            if (post.getStatus().equals("ACTIVE")) {
+                posts.add(post);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
+                .message("success")
+                .status(HttpStatus.OK)
+                .data(posts)
+                .build()
+        );
+    }
 }

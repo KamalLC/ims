@@ -36,8 +36,9 @@ public class SecurityConfig {
         http.httpBasic(Customizer.withDefaults());
         http.authorizeHttpRequests(
                 authorizeRequest ->authorizeRequest
-                        .requestMatchers("/auth/register", "/auth/login", "create/post").permitAll()
-                        .requestMatchers("/api/**").hasRole("ADMIN")
+                        .requestMatchers("/auth/register", "/auth/login", "create/**").permitAll()
+                        .requestMatchers("/api/**").hasAnyRole("USER", "ADMIN")
+//                        hasAnyRole("USER", "ADMIN")
 //                        .hasRole("ADMIN")
                         .anyRequest().denyAll()
         );
