@@ -80,27 +80,54 @@ public class CommentService {
         return commentRepo.save(reply);
     }
 
-    public Page<CommentResponse> getTopLevelCommentsForPost(long postId, int page, int size, Sort sort, boolean includeReplies) {
+    public List<Comment> getTopLevelCommentsForPost(long postId, int page, int size, Sort sort, boolean includeReplies) {
         Post post = postRepo.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
 
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Comment> commentsPage = commentRepo.findByPostAndParentIsNull(post, pageable);
+//        commentRepo.
 
-        List<CommentResponse> responses = new ArrayList<>();
-        for (Comment c : commentsPage.getContent()) {
-            long replyCount = commentRepo.countByParent(c);
-            if (includeReplies) {
-                // Fetch all replies for each top-level comment (simple pagination disabled here)
-                List<CommentResponse> replies = buildRepliesRecursively(c, Sort.by(Sort.Direction.ASC, "createdDate"));
-                responses.add(CommentMapper.toResponse(c, replyCount, replies));
-            } else {
-                responses.add(CommentMapper.toResponseWithoutReplies(c, replyCount));
-            }
-        }
+        return commentRepo.findByPost(post);
 
-        return new PageImpl<>(responses, pageable, commentsPage.getTotalElements());
+
+
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        Page<Comment> commentsPage = commentRepo.findByPostAndParentIsNull(post, pageable);
+//
+//        List<CommentResponse> responses = new ArrayList<>();
+//        for (Comment c : commentsPage.getContent()) {
+//            long replyCount = commentRepo.countByParent(c);
+//            if (includeReplies) {
+//                List<CommentResponse> replies = buildRepliesRecursively(c, Sort.by(Sort.Direction.ASC, "createdDate"));
+//                responses.add(CommentMapper.toResponse(c, replyCount, replies));
+//            } else {
+//                responses.add(CommentMapper.toResponseWithoutReplies(c, replyCount));
+//            }
+//            responses.add(CommentMapper.toResponseWithoutReplies(c, replyCount));
+//        }
+//
+//        return new PageImpl<>(responses, pageable, commentsPage.getTotalElements());
     }
+
+//    public Page<CommentResponse> getTopLevelCommentsForPost(long postId, int page, int size, Sort sort, boolean includeReplies) {
+//        Post post = postRepo.findById(postId)
+//                .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
+//
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        Page<Comment> commentsPage = commentRepo.findByPostAndParentIsNull(post, pageable);
+//
+//        List<CommentResponse> responses = new ArrayList<>();
+//        for (Comment c : commentsPage.getContent()) {
+//            long replyCount = commentRepo.countByParent(c);
+//            if (includeReplies) {
+//                List<CommentResponse> replies = buildRepliesRecursively(c, Sort.by(Sort.Direction.ASC, "createdDate"));
+//                responses.add(CommentMapper.toResponse(c, replyCount, replies));
+//            } else {
+//                responses.add(CommentMapper.toResponseWithoutReplies(c, replyCount));
+//            }
+//        }
+//
+//        return new PageImpl<>(responses, pageable, commentsPage.getTotalElements());
+//    }
 
     public CommentResponse getCommentThread(int commentId) {
         Comment root = commentRepo.findById(commentId)

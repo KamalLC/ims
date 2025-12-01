@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -47,6 +48,10 @@ public class UserService {
 
     public List<User> getAll() {
         return userRepo.findAll();
+    }
+
+    public Optional<User> getUserById(long id){
+        return userRepo.findById(id);
     }
 
 

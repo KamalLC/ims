@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface CommentRepo extends JpaRepository<Comment, Integer> {
 
     // Top-level comments for a post (parent is null)
@@ -16,4 +18,6 @@ public interface CommentRepo extends JpaRepository<Comment, Integer> {
 
     // Count replies for a parent
     long countByParent(Comment parent);
+
+    List<Comment> findByPost(Post post);
 }

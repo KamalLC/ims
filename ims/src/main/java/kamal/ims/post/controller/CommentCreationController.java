@@ -35,27 +35,27 @@ public class CommentCreationController {
         );
     }
 
-    @PostMapping(value = "/comment/{commentId}/reply")
-    public ResponseEntity<Map<String, Object>> replyToComment(
-            @PathVariable int commentId,
-            @RequestBody CommentReplyRequest request
-    ) throws JsonProcessingException {
-
-        Comment saved = commentService.replyToComment(commentId, request.getUserId(), request.getContent());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponseBuilder()
-                .status(HttpStatus.CREATED)
-                .message("Reply Created Successfully.")
-                .data(saved)
-                .build()
-        );
-    }
+//    @PostMapping(value = "/comment/{commentId}/reply")
+//    public ResponseEntity<Map<String, Object>> replyToComment(
+//            @PathVariable int commentId,
+//            @RequestBody CommentReplyRequest request
+//    ) throws JsonProcessingException {
+//
+//        Comment saved = commentService.replyToComment(commentId, request.getUserId(), request.getContent());
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponseBuilder()
+//                .status(HttpStatus.CREATED)
+//                .message("Reply Created Successfully.")
+//                .data(saved)
+//                .build()
+//        );
+//    }
 
     @PatchMapping(value = "/comment/{commentId}")
     public ResponseEntity<Map<String, Object>> updateComment(
             @PathVariable int commentId,
             @RequestBody CommentUpdateRequest request,
-            @RequestParam int userId // author id; replace with auth context later
+            @RequestParam int userId
     ) throws JsonProcessingException {
 
         Comment updated = commentService.updateComment(commentId, userId, request.getContent());
@@ -71,7 +71,7 @@ public class CommentCreationController {
     @DeleteMapping(value = "/comment/{commentId}")
     public ResponseEntity<Map<String, Object>> deleteComment(
             @PathVariable int commentId,
-            @RequestParam int userId // author id; replace with auth context later
+            @RequestParam int userId
     ) throws JsonProcessingException {
 
         commentService.softDeleteComment(commentId, userId);

@@ -1,15 +1,19 @@
 package kamal.ims.post.service;
 
+import jakarta.transaction.Transactional;
 import kamal.ims.post.model.Category;
+import kamal.ims.post.model.Comment;
 import kamal.ims.post.model.Post;
 import kamal.ims.post.repo.CategoryRepo;
 import kamal.ims.post.repo.PostRepo;
 import kamal.ims.user.model.User;
 import kamal.ims.user.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +42,36 @@ public class PostService {
     }
 
     public List<Post> getAllPosts(){
-        return postRepo.findAll();
+        return postRepo.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
+    }
+
+
+//    public List<Post> getPostsSortedByCreatedDateDesc() {
+//        return postRepo.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
+//    }
+
+    public void deletePost(long id){
+        postRepo.deleteById(id);
+    }
+
+
+    @Transactional
+    public Post approvePost(long postId) {
+        Post c = postRepo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
+
+//        if (c.getUser() == null || c.getUser().getRoles().contains("ADMIN")) {
+//            throw new RuntimeException("You are not allowed to edit this comment");
+//        }
+
+        c.setStatus("ACTIVE");
+        c.setUpdatedDate(LocalDateTime.now());
+        return postRepo.save(c);
+    }
+
+
+    public List<Post> getPostsByUserId(Long userId) {
+        return postRepo.findByUserId(userId, Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
 }

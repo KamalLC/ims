@@ -21,5 +21,5 @@ public class CommentResponse {
     private LocalDateTime deletedDate;
 
     private long replyCount;
-    private List<CommentResponse> replies; // optional nested replies
+    private List<CommentResponse> replies;
 }
