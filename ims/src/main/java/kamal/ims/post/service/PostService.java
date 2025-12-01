@@ -42,7 +42,7 @@ public class PostService {
     }
 
     public List<Post> getAllPosts(){
-        return postRepo.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
+        return postRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedDate"));
     }
 
 

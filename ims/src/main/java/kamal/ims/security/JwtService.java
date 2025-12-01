@@ -21,7 +21,7 @@ public class JwtService {
 
     public JwtService(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.access-token-exp-min:30}") long accessTokenExpMin) {
+            @Value("${jwt.access-token-exp-min: 30}") long accessTokenExpMin) {
         // HS256 secret (use at least 32 chars)
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.accessTokenExpMin = accessTokenExpMin;

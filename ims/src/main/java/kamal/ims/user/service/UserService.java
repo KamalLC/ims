@@ -45,6 +45,7 @@ public class UserService {
         userRepo.save(user);
         return user;
     }
+    
 
     public List<User> getAll() {
         return userRepo.findAll();
@@ -58,4 +59,5 @@ public class UserService {
     public void validateUser(User user) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
     }
+
 }
