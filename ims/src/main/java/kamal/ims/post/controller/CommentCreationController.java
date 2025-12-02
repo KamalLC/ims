@@ -35,21 +35,6 @@ public class CommentCreationController {
         );
     }
 
-//    @PostMapping(value = "/comment/{commentId}/reply")
-//    public ResponseEntity<Map<String, Object>> replyToComment(
-//            @PathVariable int commentId,
-//            @RequestBody CommentReplyRequest request
-//    ) throws JsonProcessingException {
-//
-//        Comment saved = commentService.replyToComment(commentId, request.getUserId(), request.getContent());
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponseBuilder()
-//                .status(HttpStatus.CREATED)
-//                .message("Reply Created Successfully.")
-//                .data(saved)
-//                .build()
-//        );
-//    }
 
     @PatchMapping(value = "/comment/{commentId}")
     public ResponseEntity<Map<String, Object>> updateComment(

@@ -45,7 +45,7 @@ public class UserService {
         userRepo.save(user);
         return user;
     }
-    
+
 
     public List<User> getAll() {
         return userRepo.findAll();
@@ -54,6 +54,8 @@ public class UserService {
     public Optional<User> getUserById(long id){
         return userRepo.findById(id);
     }
+
+
 
 
     public void validateUser(User user) {

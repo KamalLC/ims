@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.annotations.processing.Pattern;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,14 +28,14 @@ public class User {
     private String firstName;
     private String lastName;
 
-
+//    @Email(message = "Invalid email format")
     private String email;
     private boolean isAccountExpired;
     private boolean isLocked;
     private boolean isEnabled;
     private boolean isCredentialsExpired;
 
-    //    @Pattern(regexp="^\\+?[0-9]{10,15}$", message="Invalid phone number")
+//    @Pattern(regexp = "^98\\d{8}$", message="Invalid phone number")
     private String contact;
 
     private LocalDateTime createdDate;

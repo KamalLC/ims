@@ -42,26 +42,6 @@ public class CommentController {
         );
     }
 
-//    @GetMapping(value = "/posts/{postId}/comments")
-//    public ResponseEntity<Map<String, Object>> getCommentsForPost(
-//            @PathVariable int postId,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "20") int size,
-//            @RequestParam(defaultValue = "createdDate,asc") String sort,
-//            @RequestParam(defaultValue = "true") boolean includeReplies
-//    ) throws JsonProcessingException {
-//
-//        Sort sortObj = parseSort(sort);
-//        Page<CommentResponse> respPage = commentService.getTopLevelCommentsForPost(postId, page, size, sortObj, includeReplies);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
-//                .status(HttpStatus.OK)
-//                .message("Success")
-//                .data(respPage)
-//                .build()
-//        );
-//    }
-
     @GetMapping(value = "/comments/{commentId}")
     public ResponseEntity<Map<String, Object>> getCommentThread(@PathVariable int commentId) throws JsonProcessingException {
         CommentResponse response = commentService.getCommentThread(commentId);

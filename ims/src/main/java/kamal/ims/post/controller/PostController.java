@@ -68,10 +68,15 @@ public class PostController {
     public ResponseEntity<Map<String, Object>> getPostByUserId(@PathVariable("id") Long id) throws JsonProcessingException {
         List<Post> posts = postService.getPostsByUserId(id);
 
+
+        List<Post> filteredPosts = posts.stream()
+                .filter(post -> post.getStatus().equals("ACTIVE") || post.getStatus().equals("PENDING"))
+                .toList();
+
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
                 .message("success")
                 .status(HttpStatus.OK)
-                .data(posts)
+                .data(filteredPosts)
                 .build()
         );
     }
@@ -93,16 +98,27 @@ public class PostController {
                 .build()
         );
     }
+//    @DeleteMapping(value = "post/delete/{id}")
+//    public ResponseEntity<Map<String, Object>> deletePost(@PathVariable("id") Long id) throws JsonProcessingException{
+//        for(Post post : postService.getAllPosts()){
+//            if(post.getId() == id){
+//                postService.deletePost(id);
+//            }
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
+//                .message("Post Deleted")
+//                .status(HttpStatus.OK)
+//                .build()
+//        );
+//    }
+
     @DeleteMapping(value = "post/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deletePost(@PathVariable("id") Long id) throws JsonProcessingException{
-        for(Post post : postService.getAllPosts()){
-            if(post.getId() == id){
-                postService.deletePost(id);
-            }
-        }
+    public ResponseEntity<Map<String, Object>> softDeletePost(@PathVariable("id") Long id) throws JsonProcessingException {
+        postService.softDeletePost(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
-                .message("Post Deleted")
+                .message("Post Soft Deleted")
                 .status(HttpStatus.OK)
                 .build()
         );

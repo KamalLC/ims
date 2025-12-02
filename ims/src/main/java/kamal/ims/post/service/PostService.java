@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -73,5 +74,16 @@ public class PostService {
     public List<Post> getPostsByUserId(Long userId) {
         return postRepo.findByUserId(userId, Sort.by(Sort.Direction.DESC, "createdDate"));
     }
+
+
+    public void softDeletePost(Long id) {
+        Optional<Post> postOptional = postRepo.findById(id);
+        if (postOptional.isPresent()) {
+            Post post = postOptional.get();
+            post.setStatus("DELETED"); // or post.setIsDeleted(true);
+            postRepo.save(post);
+        }
+    }
+
 
 }

@@ -45,7 +45,7 @@ public class SecurityConfig {
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/register", "/auth/login", "/create/**").permitAll()
+                .requestMatchers("/auth/register", "/auth/login", "/create/**", "/swagger-ui/**").permitAll()
                 .requestMatchers("/api/pending_posts").hasRole("ADMIN")
                 .requestMatchers("/api/**", "/posts/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().denyAll()

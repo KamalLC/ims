@@ -37,4 +37,24 @@ public class UserController {
     }
 
 
-}
+    @GetMapping(value = "/user/{id}")
+    public ResponseEntity<Map<String, Object>> getUserById(@PathVariable("id") Long id) {
+        Optional<User> userOptional = userService.getUserById(id);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
+                    .status(HttpStatus.OK)
+                    .message("User fetched successfully")
+                    .data(userOptional.get())
+                    .build()
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseBuilder()
+                    .status(HttpStatus.NOT_FOUND)
+                    .message("User not found")
+                    .build()
+            );
+        }
+    }
+
+    }
