@@ -70,7 +70,7 @@ public class PostController {
 
 
         List<Post> filteredPosts = posts.stream()
-                .filter(post -> post.getStatus().equals("ACTIVE") || post.getStatus().equals("PENDING"))
+                .filter(post -> !post.getStatus().equals("DELETED"))
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
@@ -124,7 +124,7 @@ public class PostController {
         );
     }
 
-    @PatchMapping(value = "/post/{postId}")
+    @PatchMapping(value = "/post/approve/{postId}")
     public ResponseEntity<Map<String, Object>> approvePost(
             @PathVariable int postId
     ) throws JsonProcessingException {
@@ -134,6 +134,34 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
                 .status(HttpStatus.OK)
                 .message("Post Approved Successfully.")
+                .data(updated)
+                .build()
+        );
+    }
+    @PatchMapping(value = "/post/reject/{postId}")
+    public ResponseEntity<Map<String, Object>> rejectPost(
+            @PathVariable int postId
+    ) throws JsonProcessingException {
+
+        Post updated = postService.rejectPost(postId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
+                .status(HttpStatus.OK)
+                .message("Post Rejected Successfully.")
+                .data(updated)
+                .build()
+        );
+    }
+    @PatchMapping(value = "/post/close/{postId}")
+    public ResponseEntity<Map<String, Object>> closePost(
+            @PathVariable int postId
+    ) throws JsonProcessingException {
+
+        Post updated = postService.closePost(postId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
+                .status(HttpStatus.OK)
+                .message("Post Closed Successfully.")
                 .data(updated)
                 .build()
         );

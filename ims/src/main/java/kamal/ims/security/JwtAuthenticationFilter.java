@@ -36,7 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // No bearer token → continue; protected endpoints will trigger 401 via entry point
             filterChain.doFilter(request, response);
             return;
         }
@@ -46,10 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             username = jwtService.extractUsername(token);
         } catch (Exception ignored) {
-            // Invalid token → let the chain continue; accessing protected routes will yield 401
+
         }
 
-        // Set authentication if token is valid and no existing auth present
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtService.isTokenValid(token, userDetails)) {

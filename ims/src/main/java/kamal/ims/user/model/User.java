@@ -1,12 +1,13 @@
 package kamal.ims.user.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import kamal.ims.post.model.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.hibernate.annotations.processing.Pattern;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,19 +29,29 @@ public class User {
     private String firstName;
     private String lastName;
 
-//    @Email(message = "Invalid email format")
+    @Email(message = "Invalid email format")
     private String email;
     private boolean isAccountExpired;
     private boolean isLocked;
     private boolean isEnabled;
     private boolean isCredentialsExpired;
 
-//    @Pattern(regexp = "^98\\d{8}$", message="Invalid phone number")
+    @Pattern(regexp = "^98\\d{8}$", message="Invalid phone number")
     private String contact;
 
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime lastLoginDate;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedDate = LocalDateTime.now();
+    }
 
 
     @ManyToMany( fetch = FetchType.EAGER)

@@ -61,11 +61,27 @@ public class PostService {
         Post c = postRepo.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
 
-//        if (c.getUser() == null || c.getUser().getRoles().contains("ADMIN")) {
-//            throw new RuntimeException("You are not allowed to edit this comment");
-//        }
-
         c.setStatus("ACTIVE");
+        c.setUpdatedDate(LocalDateTime.now());
+        return postRepo.save(c);
+    }
+
+    @Transactional
+    public Post rejectPost(long postId) {
+        Post c = postRepo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
+
+        c.setStatus("REJECTED");
+        c.setUpdatedDate(LocalDateTime.now());
+        return postRepo.save(c);
+    }
+
+    @Transactional
+    public Post closePost(long postId) {
+        Post c = postRepo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
+
+        c.setStatus("CLOSED");
         c.setUpdatedDate(LocalDateTime.now());
         return postRepo.save(c);
     }
