@@ -32,6 +32,7 @@ public class ScriptRunner implements CommandLineRunner {
 
         List<Category> categories = Arrays.asList(new Category("ISSUE"),
                 new Category("COMPLAINT"),
+                new Category("CRITICAL"),
                 new Category("POST"));
         for(Category category : categories){
             Category existedCategory = categoryService.getCategoryByName(category.getCategoryName());

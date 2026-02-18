@@ -4,7 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import kamal.ims.post.model.Category;
 import kamal.ims.post.model.Post;
 import kamal.ims.post.service.CategoryService;
+import kamal.ims.post.service.MailService;
 import kamal.ims.post.service.PostService;
+import kamal.ims.user.repo.UserRepo;
+import kamal.ims.user.service.UserService;
 import kamal.ims.util.ApiResponseBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,9 +29,24 @@ public class CreationController {
     @Autowired
     PostService postService;
 
+    @Autowired
+    MailService mailService;
+
+    @Autowired
+    UserRepo userRepo;
+
     @PostMapping(value = "/post")
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) throws JsonProcessingException {
         postService.createPost(post);
+
+        System.out.println(post.getCategory().getCategoryName());
+        if(post.getCategory().getCategoryName().equalsIgnoreCase("critical")){
+            List<String> emails = userRepo.findAllUniqueEmails();
+
+            for(String email: emails){
+                mailService.sendEmail(email, "Urgent Blood Required", post.getDescription());
+            }
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseBuilder()
                 .status(HttpStatus.CREATED)
